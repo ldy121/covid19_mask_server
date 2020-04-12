@@ -1,62 +1,64 @@
 const express = require('express');
-const request = require('sync-request');
+const axios	= require('axios');
 const console = require('console');
 
 const storePage = 'https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/stores/json?page='
 const salePage  = 'https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/sales/json?page='
 
-var app = express();
+const app = express();
+const port = 80;
 
 let storeInfos = [];
-let port = 80;
 
-function req(uriBase, key) {
+async function req(uriBase, key) {
 	let page = 1;
 	let totalPages = 1;
 	let ret = [];
 
+	console.log(key);
 	do {
-		try {
-			let res = request('GET', uriBase + page);
-			json = JSON.parse(res.getBody());
-		} catch {
-			continue;
-		}
-		list = json[key];
-		ret = ret.concat(list);
-		totalPages = json.totalPages;
+		await axios({
+			method : 'get',
+			url : uriBase + page,
+		}).then((res) => {
+			const list = res.data[key];
+			totalPages = res.data.totalPages;
+			ret = ret.concat(list);
+		});
 	} while (page++ < totalPages);
 	console.log(ret.length);
 
 	return ret;
 }
 
-function main() {
-	let stores  = req(storePage, 'storeInfos');
-	let sales   = req(salePage,  'sales');
+async function main() {
+	const stores  = req(storePage, 'storeInfos');
+	const sales   = req(salePage,  'sales');
 	let codeSales = {};
 
-	sales.forEach((element)  => { 
-		let code = element.code;
-		if (code != null) {
-			delete(element['code']);
-			codeSales[code] = element;
-		}
-	});
-	stores.forEach((element) => {
-		let code = element.code;
-		if(codeSales[code] != null) {
-			let sale = codeSales[code];
-			let newObject = (Object.assign(element, sale));
-			storeInfos.push(newObject);
-		}
+	await sales.then((resolve) => {
+		resolve.forEach((sale)  => { 
+			if (sale.code) {
+				codeSales[sale.code] = sale;
+				delete(sale.code);
+			}
+		});
 	});
 
-	console.log(storeInfos.length);
+	await stores.then((resolve) => {
+		resolve.forEach((store) => {
+			if (codeSales[store.code]) {
+				storeInfos.push(Object.assign(store, codeSales[store.code]));
+			}
+		});
+	});
 }
 
 app.get('/', (req, res) => {
 	if (req.query.city != null) {
+		console.log(req.query.city);
+		console.log(storeInfos.length);
+
 		let city = req.query.city;
 		let storeList = [];
 		storeInfos.forEach((element) => {
@@ -73,3 +75,4 @@ app.get('/', (req, res) => {
 app.listen(port, () => { console.log(`server start port at ${port}`); });
 
 main();
+console.log("start server");
