@@ -6,7 +6,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "start": "node --experimental-modules index.js",
+    "start": "node --es-module-specifier-resolution=node --experimental-modules index.js",
     "lint": "eslint *.js",
     "prettier": "prettier --write *.js"
   },
