@@ -1,5 +1,5 @@
-import express from 'express'
-import {retreieveStore, getStoreInfo}  from './lib/retreieveStore'
+import express from "express";
+import { retreieveStore, getStoreInfo } from "./lib/retreieveStore";
 
 const app = express();
 const port = 80;
@@ -11,12 +11,14 @@ app.get("/", (req, res) => {
     let city = req.query.city;
     const storeInfos = getStoreInfo();
 
-    const storeList = storeInfos.filter((element) => {
-      return (element.addr.indexOf(city) >= 0);
-    }).filter((element) => {
-      const cityAddr = 10;      
-      return (element.addr.indexOf(city) < cityAddr);
-    });
+    const storeList = storeInfos
+      .filter((element) => {
+        return element.addr.indexOf(city) >= 0;
+      })
+      .filter((element) => {
+        const cityAddr = 10;
+        return element.addr.indexOf(city) < cityAddr;
+      });
 
     console.log(storeList.length);
     res.send(storeList);

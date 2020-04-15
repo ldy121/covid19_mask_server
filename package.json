@@ -7,8 +7,8 @@
   "type": "module",
   "scripts": {
     "start": "node --es-module-specifier-resolution=node --experimental-modules index.js",
-    "lint": "eslint *.js",
-    "prettier": "prettier --write *.js"
+    "lint": "eslint lib/*.js *.js",
+    "prettier": "prettier --write **/*.js *.js"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
