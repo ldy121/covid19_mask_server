@@ -1,6 +1,5 @@
-const express = require("express");
-const axios = require("axios");
-const console = require("console");
+import express from 'express'
+import axios from 'axios'
 
 const storePage =
   "https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/stores/json?page=";
@@ -59,8 +58,6 @@ async function main() {
 app.get("/", (req, res) => {
   if (req.query.city != null) {
     console.log(req.query.city);
-    console.log(storeInfos.length);
-
     let city = req.query.city;
     let storeList = [];
     storeInfos.forEach((element) => {
@@ -68,6 +65,7 @@ app.get("/", (req, res) => {
         storeList.push(element);
       }
     });
+    console.log(storeList.length);
     res.send(storeList);
   } else {
     res.send("city=[city name]");
