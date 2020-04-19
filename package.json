@@ -4,30 +4,21 @@
   "main": "index.js",
   "author": "ldy121",
   "license": "MIT",
-  "type": "module",
   "engines": {
     "node": ">=8.0.0"
   },
   "scripts": {
-    "start": "node --es-module-specifier-resolution=node --experimental-modules index.js",
+    "start": "node index.js",
     "lint": "eslint lib/*.js *.js",
     "prettier": "prettier --write **/*.js *.js"
-  },
-  "devDependencies": {
-    "express": "^4.16.3",
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb": "^18.1.0",
-    "eslint-config-strongloop": "^2.1.0",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-prettier": "^3.1.2",
-    "eslint-plugin-react": "^7.19.0"
   },
   "repository": "git@github.com:ldy121/covid19_mask_server.git",
   "dependencies": {
     "axios": "^0.19.2",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.1",
-    "eslint-plugin-react-hooks": "^3.0.0"
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^3.0.0",
+    "express": "^4.16.3"
   }
 }

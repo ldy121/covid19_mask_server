@@ -1,10 +1,7 @@
-'use strict';
-
-import express from "express";
-import { retreieveStore, getStoreInfo } from "./lib/retreieveStore";
+const express = require("express");
+const { retreieveStore, getStoreInfo } = require("./lib/retreieveStore");
 
 const app = express();
-const port = 80;
 
 app.get("/", (req, res) => {
   if (req.query.city != null) {
@@ -29,9 +26,9 @@ app.get("/", (req, res) => {
   }
 });
 
+const port = process.env.PORT || 8080;
+
 app.listen(port, () => {
   console.log(`server start port at ${port}`);
+  retreieveStore();
 });
-
-retreieveStore();
-console.log("start server");
